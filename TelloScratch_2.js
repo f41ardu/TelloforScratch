@@ -1,7 +1,7 @@
  
  
  (function(ext) {
-   // /home/pi/code/TelloScratch/TelloScratch.js
+   // /home/pi/code/TelloforScratch/TelloScratch_2.js
    // Tello udp port and IP address
    var PORT = 8889 ;
    var HOST = '192.168.10.1'; // Tello IP
