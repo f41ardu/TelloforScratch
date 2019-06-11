@@ -9,6 +9,7 @@
    
    // Scratch listener port 
    var listenerPort = 8890; 
+   var listenerPortOK = 9000; 
    var listenerHOST = '0.0.0.0';
 
    // udp connector  
@@ -16,12 +17,16 @@
    // client connector (send commands) 
    var client = dgram.createSocket('udp4');
    // server connector (receive Telle response) 
-   var server = dgram.createSocket('udp4');
+   var serverOK = dgram.createSocket('udp4');
+   // server connector (receive Telle response) 
+   var serverOK = dgram.createSocket('udp4');
+
    // initial variables
    var myStatus = 1; // initially set status to yellow
    var connected = false; // initially set connected to false
    var getData = ' '; // initial set blank 
-   
+   var getOK = ' '; // initial set blank
+
    // Scratch UDP Listener (experimental) 
    ext.cnct = function() {	
 
@@ -50,6 +55,33 @@
    };
     // end UDP Listener (experimental)
    
+   // Scratch UDPOK Listener (experimental) 
+   ext.cnctOK = function() {	
+
+		serverOK.on("error", function (err) {
+			console.log("server error:\n" + err.stack);
+			serverOK.close();
+		});
+
+		serverOK.on("message", function (okmsg, rinfo) {
+			//setReceived("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port); 
+			setOKReceived("_"+ okmsg +"_"); 
+			//myStatus = 1;         
+			});
+
+		serverOK.on("listening", function () {
+			myStatus = 2; });
+	    // listen on all IP adresses
+		serverOK.bind(listenerPortOK);
+   };		    
+  
+   
+   // transfer UDPOK feedback into Scratchblock
+   function setOKReceived(message) {
+	   getOK = message; 
+   };
+    // end UDP Listener2 (experimental)
+
    // Cleanup function when the extension is unloaded
 
    ext._shutdown = function() {};
@@ -213,11 +245,6 @@
 		});
    };
 
-// Get result
-   ext.result = function () {
-   var test = getData;
-   return test;
-   };
 
    // Send set flip Direction
    ext.setflipDirection = function (val) {
@@ -230,7 +257,18 @@
 		});
    
    };
+
+// Get result
+   ext.result = function () {
+   var test = getData;
+   return test;
+   };
    
+   // Get result
+   ext.resultOK = function () {
+   var test = getOK;
+   return test;
+   };   
 
    // added function to support the Start The Program block
    ext.goGreen = function() {
@@ -241,9 +279,10 @@
    // Block and block menu descriptions
    var descriptor = {
     blocks: [
-     // ['h', 'Command', 'command'], 		// send command string
 		[' ', 'Receiver', 'cnct'],
-		['r', 'Result %s', 'result'],
+		[' ', 'Response', 'cnctok'],
+		['r', 'Result', 'result'],
+		['r', 'ResultOK', 'resultOK'],
 		[' ', 'Send command', 'sendcommand'],
 		[' ', 'take off', 'takeoff'],
 		[' ', 'land', 'land'],
@@ -258,8 +297,8 @@
 		[' ', 'flip direction %m.flipDirection', 'setflipDirection', 'forward'],
 		[' ', 'set speed %n', 'setspeed', 80]	
  	  ],
- 	  menus: {
-        flipDirection: ['left', 'right', 'forward', 'back']
+ 	  'menus': {
+        'flipDirection': ['left', 'right', 'forward', 'back']
     },
     url: 'https://github.com/f41ardu',
     displayName: 'Tello SDK'
