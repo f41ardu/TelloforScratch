@@ -242,6 +242,8 @@
    var descriptor = {
     blocks: [
      // ['h', 'Command', 'command'], 		// send command string
+		[' ', 'Receiver', 'cnct'],
+		['r', 'Result %s', 'result'],
 		[' ', 'Send command', 'sendcommand'],
 		[' ', 'take off', 'takeoff'],
 		[' ', 'land', 'land'],
@@ -254,9 +256,7 @@
 		[' ', 'rotate CW with angle %n', 'cw', 90],
 		[' ', 'rotate CCW with angle %n', 'ccw', 90],
 		[' ', 'flip direction %m.flipDirection', 'setflipDirection', 'forward'],
-		[' ', 'set speed %n', 'setspeed', 80],	
-		['r', 'Result %s', 'result'],
-		[' ', 'Receiver', 'cnct']
+		[' ', 'set speed %n', 'setspeed', 80]	
  	  ],
  	  menus: {
         flipDirection: ['left', 'right', 'forward', 'back']
