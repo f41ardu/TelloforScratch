@@ -13,15 +13,22 @@
 
    // udp connector  
    var dgram = require('dgram');
+   // client connector (send commands) 
    var client = dgram.createSocket('udp4');
+   // server connector (receive Telle response) 
    var server = dgram.createSocket('udp4');
    // initial variables
    var myStatus = 1; // initially set status to yellow
    var connected = false; // initially set connected to false
-   var getData = ' '; // initial set to ERROR 
+   var getData = ' '; // initial set blank 
    
    // Scratch UDP Listener (experimental) 
    ext.cnct = function() {	
+
+		server.on("error", function (err) {
+			console.log("server error:\n" + err.stack);
+			server.close();
+		});
 
 		server.on("message", function (msg, rinfo) {
 			//setReceived("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port); 
@@ -31,14 +38,17 @@
 
 		server.on("listening", function () {
 			myStatus = 2; });
-	
+	    // listen on all IP adresses
 		server.bind(listenerPort);
    };		    
-   // end UDP Listener (experimental)
+  
+   
+   // transfer UDP feedback into Scratchblock
    function setReceived(message) {
 	   getData = message;
 	   //myStatus = 0; 
    };
+    // end UDP Listener (experimental)
    
    // Cleanup function when the extension is unloaded
 
@@ -54,7 +64,7 @@
      return {status: myStatus, msg: 'Ready'};
    };
    
-   // Send command and set Tello into SDK mode
+   // Send command 'command' and set Tello into SDK mode
    ext.command = function () {
    
    var message = new Buffer('command');
