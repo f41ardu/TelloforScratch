@@ -4,8 +4,8 @@
    // /home/pi/code/TelloforScratch/TelloScratch_2.js
    // Tello udp port and IP address
    var PORT = 8889 ;
-   var HOST = '192.168.10.1'; // Tello IP
-   //var HOST = '127.0.0.1'; // Test localhost
+   //var HOST = '192.168.10.1'; // Tello IP
+   var HOST = '127.0.0.1'; // Test localhost (debug mode)
    
    // Scratch listener port 
    var listenerPort = 8890; 
@@ -153,69 +153,11 @@
 		//client.close();
 		});   
    };
-
-   // Send set up
-   ext.up = function (val) {
+ 
+   // Send set fly direction and distance
+   ext.flydir = function (direction, distance) {
    
-   var message = new Buffer('up ' + val);
-
-	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-		//if (err) throw err;
-		//client.close();
-		});
-		return msg;
-   };
-   
-   // Send set down
-   ext.down = function (val) {
-   
-   var message = new Buffer('down ' + val);
-
-	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-		//if (err) throw err;
-		//client.close();
-		});
-   };
-   
-   // Send set left
-   ext.left = function (val) {
-   
-   var message = new Buffer('left ' + val);
-
-	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-		//if (err) throw err;
-		//client.close();
-		});
-   
-   };
-   
-   // Send set right
-   ext.right = function (val) {
-   
-   var message = new Buffer('right ' + val);
-
-	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-		//if (err) throw err;
-		//client.close();
-		});
-   
-   };
-   
-   // Send set forward
-   ext.forward = function (val) {
-   
-   var message = new Buffer('forward ' + val);
-
-	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-		//if (err) throw err;
-		//client.close();
-		});
-	};
-	
-   // Send set back
-   ext.back = function (val) {
-   
-   var message = new Buffer('back ' + val);
+   var message = new Buffer(direction +' ' + distance);
 
 	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 		//if (err) throw err;
@@ -286,19 +228,15 @@
 		[' ', 'Send command', 'sendcommand'],
 		[' ', 'take off', 'takeoff'],
 		[' ', 'land', 'land'],
-		[' ', 'fly up with distance %n', 'up', 20],
-		[' ', 'fly down with distance %n', 'down', 20],
-		[' ', 'fly left with distance %n', 'left', 20],
-		[' ', 'fly right with distance %n', 'right', 20],
-		[' ', 'fly forward with distance %n', 'forward', 20],
-		[' ', 'fly back with distance %n', 'back', 20],
+		[' ', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
 		[' ', 'rotate CW with angle %n', 'cw', 90],
 		[' ', 'rotate CCW with angle %n', 'ccw', 90],
 		[' ', 'flip direction %m.flipDirection', 'setflipDirection', 'forward'],
 		[' ', 'set speed %n', 'setspeed', 80]	
  	  ],
  	  'menus': {
-        'flipDirection': ['left', 'right', 'forward', 'back']
+        'flipDirection': ['left', 'right', 'forward', 'backward'],
+        'direction' : ['up', 'down', 'forward', 'backward', 'left', 'right']
     },
     url: 'https://github.com/f41ardu',
     displayName: 'Tello SDK'
