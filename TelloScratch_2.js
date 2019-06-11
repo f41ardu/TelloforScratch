@@ -1,4 +1,28 @@
- 
+ /* 
+  * 
+  * MIT License
+  * 
+  * Copyright (c) 2019 f41_ardu
+  * 
+  * Permission is hereby granted, free of charge, to any person obtaining a copy
+  * of this software and associated documentation files (the "Software"), to deal
+  * in the Software without restriction, including without limitation the rights
+  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  * copies of the Software, and to permit persons to whom the Software is
+  * furnished to do so, subject to the following conditions:
+  * 
+  * The above copyright notice and this permission notice shall be included in all
+  * copies or substantial portions of the Software.
+  * 
+  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  * SOFTWARE.
+  * 
+  */
  
  (function(ext) {
    // /home/pi/code/TelloforScratch/TelloScratch_2.js
@@ -157,7 +181,7 @@
    // Send set fly direction and distance
    ext.flydir = function (direction, distance) {
    
-   var message = new Buffer(direction +' ' + distance);
+   var message = new Buffer(direction + ' ' + distance);
 
 	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 		//if (err) throw err;
@@ -165,33 +189,21 @@
 		});
    };
    
-   // Send set cw
-   ext.cw = function (val) {
+   // Send rotation direction and angle
+   ext.rotation = function (direction, angle) {
    
-   var message = new Buffer('cw ' + val);
+   var message = new Buffer(direction + ' ' + angle);
 
 	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 		//if (err) throw err;
 		//client.close();
 		});
    };
-
-   // Send set ccw
-   ext.ccw = function (val) {
-   
-   var message = new Buffer('ccw ' + val);
-
-	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-		//if (err) throw err;
-		//client.close();
-		});
-   };
-
 
    // Send set flip Direction
    ext.setflipDirection = function (val) {
    
-   var message = new Buffer(val);
+   var message = new Buffer('flip ' + val.charAt(0));
 
 	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 		//if (err) throw err;
@@ -229,14 +241,14 @@
 		[' ', 'take off', 'takeoff'],
 		[' ', 'land', 'land'],
 		[' ', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
-		[' ', 'rotate CW with angle %n', 'cw', 90],
-		[' ', 'rotate CCW with angle %n', 'ccw', 90],
+		[' ', 'rotate %m.rotation with angle %n', 'rotation', 'cw', '90'],
 		[' ', 'flip direction %m.flipDirection', 'setflipDirection', 'forward'],
 		[' ', 'set speed %n', 'setspeed', 80]	
  	  ],
  	  'menus': {
         'flipDirection': ['left', 'right', 'forward', 'backward'],
-        'direction' : ['up', 'down', 'forward', 'backward', 'left', 'right']
+        'direction'    : ['up', 'down', 'forward', 'backward', 'left', 'right'],
+        'rotation'     : ['cw', 'ccw']
     },
     url: 'https://github.com/f41ardu',
     displayName: 'Tello SDK'
