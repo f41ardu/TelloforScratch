@@ -32,8 +32,7 @@
    var HOST = '127.0.0.1'; // Test localhost (debug mode)
    
    // Scratch listener port 
-   var listenerPort = 8890; 
-   var listenerPortOK = 9000; 
+   var listenerPort = 9000;  
    var listenerHOST = '0.0.0.0';
 
    // udp connector  
@@ -41,10 +40,8 @@
    // client connector (send commands) 
    var client = dgram.createSocket('udp4');
    // server connector (receive Telle response) 
-   var serverOK = dgram.createSocket('udp4');
-   // server connector (receive Telle response) 
-   var serverOK = dgram.createSocket('udp4');
-
+   var server1 = dgram.createSocket('udp4');
+   
    // initial variables
    var myStatus = 1; // initially set status to yellow
    var connected = false; // initially set connected to false
@@ -54,21 +51,21 @@
    // Scratch UDP Listener (experimental) 
    ext.cnct = function() {	
 
-		server.on("error", function (err) {
+		server1.on("error", function (err) {
 			console.log("server error:\n" + err.stack);
 			server.close();
 		});
 
-		server.on("message", function (msg, rinfo) {
+		server1.on("message", function (msg, rinfo) {
 			//setReceived("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port); 
 			setReceived("_"+ msg +"_"); 
 			//myStatus = 1;         
 			});
 
-		server.on("listening", function () {
+		server1.on("listening", function () {
 			myStatus = 2; });
 	    // listen on all IP adresses
-		server.bind(listenerPort);
+		server1.bind(listenerPort);
    };		    
   
    
@@ -79,33 +76,6 @@
    };
     // end UDP Listener (experimental)
    
-   // Scratch UDPOK Listener (experimental) 
-   ext.cnctOK = function() {	
-
-		serverOK.on("error", function (err) {
-			console.log("server error:\n" + err.stack);
-			serverOK.close();
-		});
-
-		serverOK.on("message", function (okmsg, rinfo) {
-			//setReceived("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port); 
-			setOKReceived("_"+ okmsg +"_"); 
-			//myStatus = 1;         
-			});
-
-		serverOK.on("listening", function () {
-			myStatus = 2; });
-	    // listen on all IP adresses
-		serverOK.bind(listenerPortOK);
-   };		    
-  
-   
-   // transfer UDPOK feedback into Scratchblock
-   function setOKReceived(message) {
-	   getOK = message; 
-   };
-    // end UDP Listener2 (experimental)
-
    // Cleanup function when the extension is unloaded
 
    ext._shutdown = function() {};
@@ -213,16 +183,11 @@
    };
 
 // Get result
-   ext.result = function () {
+   ext.Data = function () {
    var test = getData;
    return test;
    };
    
-   // Get result
-   ext.resultOK = function () {
-   var test = getOK;
-   return test;
-   };   
 
    // added function to support the Start The Program block
    ext.goGreen = function() {
@@ -234,9 +199,7 @@
    var descriptor = {
     blocks: [
 		[' ', 'Receiver', 'cnct'],
-		[' ', 'Response', 'cnctok'],
-		['r', 'Result', 'result'],
-		['r', 'ResultOK', 'resultOK'],
+		['r', 'Data', 'Data'],
 		[' ', 'Send command', 'sendcommand'],
 		[' ', 'take off', 'takeoff'],
 		[' ', 'land', 'land'],
