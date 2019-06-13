@@ -181,6 +181,17 @@
 		});
    
    };
+   
+   // read Data 
+   ext.readData = function (val) {
+	   var message = new Buffer(val);
+
+	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
+		});
+   var test = getData.trim();
+   getData = ""; 
+   return test;
+   };
 
 // Get result
    ext.Data = function () {
@@ -202,6 +213,7 @@
 		[' ', 'Receiver', 'cnct'],
 		['r', 'Data', 'Data'],
 		[' ', 'Send command', 'sendcommand'],
+		['r', 'Read %m.readcommand', 'readData', 'speed'],
 		[' ', 'take off', 'takeoff'],
 		[' ', 'land', 'land'],
 		[' ', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
@@ -212,7 +224,8 @@
  	  'menus': {
         'flipDirection': ['left', 'right', 'forward', 'backward'],
         'direction'    : ['up', 'down', 'forward', 'backward', 'left', 'right'],
-        'rotation'     : ['cw', 'ccw']
+        'rotation'     : ['cw', 'ccw'],
+        'readcommand'  : ['speed?','battery?','time?','height?','temp?','attitude?','baro?','acceleration?','tof?']
     },
     url: 'https://github.com/f41ardu',
     displayName: 'Tello SDK'
