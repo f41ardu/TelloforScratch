@@ -19,4 +19,10 @@ a second one to listen to response to state commands
 What is the best software architecture to implement this? 
 
 First I'll remove the setReceive function. 
-Could make it much simpler.  
+Could make it much simpler. 
+
+After removig setReceived I've implemented a second udp listener. 
+Seems to work.
+Now a second repeater is required to test the respons behaviour. 
+Require is now a dictionary in repeater.js to send response 
+to the correct listener.  
