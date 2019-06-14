@@ -58,7 +58,7 @@
 
 		server1.on("message", function (msg, rinfo) {
 			//setReceived("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port); 
-			setReceived(' '+msg+' '); 
+			getData = ' '+msg+' '; 
 			//myStatus = 1;         
 			});
 
