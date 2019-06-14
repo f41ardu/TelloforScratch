@@ -68,14 +68,7 @@
 		server1.bind(listenerPort);
    };		    
   
-   
-   // transfer UDP feedback into Scratchblock 
-   // might be made obsolete 
-   function setReceived(message) {
-	   getData = message;
-	   //myStatus = 0; 
-   };
-    // end UDP Listener (experimental)
+   // end UDP Listener (experimental)
    
    // Cleanup function when the extension is unloaded
 
