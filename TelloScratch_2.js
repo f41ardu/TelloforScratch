@@ -69,7 +69,8 @@
    };		    
   
    
-   // transfer UDP feedback into Scratchblock
+   // transfer UDP feedback into Scratchblock 
+   // might be made obsolete 
    function setReceived(message) {
 	   getData = message;
 	   //myStatus = 0; 
@@ -148,7 +149,7 @@
 		});   
    };
  
-   // Send set fly direction and distance
+   // Send set fly direction and distance to fly
    ext.flydir = function (direction, distance) {
    
    var message = new Buffer(direction + ' ' + distance);
@@ -159,7 +160,7 @@
 		});
    };
    
-   // Send rotation direction and angle
+   // Send rotation direction and rotation angle
    ext.rotation = function (direction, angle) {
    
    var message = new Buffer(direction + ' ' + angle);
@@ -182,18 +183,28 @@
    
    };
    
-   // read Data 
+   // read Data improved for all Tello return codes, flight and state commands
    ext.readData = function (val) {
-	   var message = new Buffer(val);
+      
+      var message = new Buffer(val);
+      if (val == 'OK' ) {
+	    // for all flight commands 
+	    // we need a wait statement here
+	    var test = getData.trim();
+      } else {
+	     client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
+			});
+	    // for all state commands
+	    // we need a wait statement here 		
+	    var test = getData.trim();
+      }
+      
+      getData = ""; // clear getDate
+      return test;
 
-	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-		});
-   var test = getData.trim();
-   getData = ""; 
-   return test;
    };
 
-// Get result
+// Get result (to be removed from code later) 
    ext.Data = function () {
    var test = getData.trim();
    getData = ""; 
@@ -213,7 +224,7 @@
 		[' ', 'Receiver', 'cnct'],
 		['r', 'Data', 'Data'],
 		[' ', 'Send command', 'sendcommand'],
-		['r', 'Read %m.readcommand', 'readData', 'speed'],
+		['r', 'Read %m.readcommand', 'readData', 'OK'],
 		[' ', 'take off', 'takeoff'],
 		[' ', 'land', 'land'],
 		[' ', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
@@ -225,7 +236,7 @@
         'flipDirection': ['left', 'right', 'forward', 'backward'],
         'direction'    : ['up', 'down', 'forward', 'backward', 'left', 'right'],
         'rotation'     : ['cw', 'ccw'],
-        'readcommand'  : ['speed?','battery?','time?','height?','temp?','attitude?','baro?','acceleration?','tof?']
+        'readcommand'  : ['OK','speed?','battery?','time?','height?','temp?','attitude?','baro?','acceleration?','tof?']
     },
     url: 'https://github.com/f41ardu',
     displayName: 'Tello SDK'
