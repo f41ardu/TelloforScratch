@@ -32,7 +32,7 @@
    var HOST = '127.0.0.1'; // Test localhost (debug mode)
    
    // Scratch listener port 
-   var listenerPort = 9000;  
+   var listenerPort = 8890;  
    var listenerHOST = '0.0.0.0';
 
    // udp connector  
@@ -41,6 +41,7 @@
    var client = dgram.createSocket('udp4');
    // server connector (receive Telle response) 
    var server1 = dgram.createSocket('udp4');
+   var server2 = dgram.createSocket('udp4');
    
    // initial variables
    var myStatus = 1; // initially set status to yellow
@@ -66,6 +67,24 @@
 			myStatus = 2; });
 	    // listen on all IP adresses
 		server1.bind(listenerPort);
+		
+	    // create server 2	
+		server2.on("error", function (err) {
+			console.log("server error:\n" + err.stack);
+			server.close();
+		});
+
+		server2.on("message", function (msg, rinfo) {
+			//setReceived("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port); 
+			getOK = ' '+msg+' '; 
+			//myStatus = 1;         
+			});
+
+		server2.on("listening", function () {
+			myStatus = 2; });
+	    // listen on all IP adresses
+		server2.bind(9000);	
+		
    };		    
   
    // end UDP Listener (experimental)
@@ -183,7 +202,7 @@
       if (val == 'OK' ) {
 	    // for all flight commands 
 	    // we need a wait statement here
-	    var test = getData.trim();
+	    var test = getOK.trim();
       } else {
 	     client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 			});
