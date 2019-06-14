@@ -33,7 +33,7 @@
    
    // Scratch listener port 
    var listenerPort = 8890;  
-   var listenerHOST = '0.0.0.0';
+   var listenerHOST = '127.0.0.1';
 
    // udp connector  
    var dgram = require('dgram');
@@ -66,7 +66,7 @@
 		server1.on("listening", function () {
 			myStatus = 2; });
 	    // listen on all IP adresses
-		server1.bind(listenerPort);
+		server1.bind(listenerPort,listenerHOST);
 		
 	    // create server 2	
 		server2.on("error", function (err) {
@@ -83,7 +83,7 @@
 		server2.on("listening", function () {
 			myStatus = 2; });
 	    // listen on all IP adresses
-		server2.bind(9000);	
+		server2.bind(9000,listenerHOST);	
 		
    };		    
   
@@ -204,6 +204,7 @@
 	    // we need a wait statement here
 	    var test = getOK.trim();
       } else {
+
 	     client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 			});
 	    // for all state commands
@@ -211,14 +212,14 @@
 	    var test = getData.trim();
       }
       
-      getData = ""; // clear getDate
+      // getData = ""; // clear getDate
       return test;
 
    };
 
 // Get result (to be removed from code later) 
    ext.Data = function () {
-   var test = getData.trim();
+   var test = getOK.trim();
    getData = ""; 
    return test;
    };
