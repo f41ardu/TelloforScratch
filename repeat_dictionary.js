@@ -8,7 +8,7 @@ var initial = new Buffer('OK');
 
  var dict = {
   'speed?' : 8890, 
-  'battery' : 8890, 
+  'battery?' : 8890, 
   'time?' : 8890, 
   'height?' : 8890, 
   'command' : 9000, 
