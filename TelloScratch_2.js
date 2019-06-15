@@ -91,7 +91,10 @@
    
    // Cleanup function when the extension is unloaded
 
-   ext._shutdown = function() {};
+   ext._shutdown = function() {
+	   server1.close();
+	   server2.close()
+   };
 
    // Status reporting code
 
@@ -137,7 +140,7 @@
    };
    
    // Send takeoff
-   ext.takeoff = function () {
+   ext.takeoff = function (callback) {
    
    var message = new Buffer('takeoff');
 
@@ -145,21 +148,31 @@
 		//if (err) throw err;
 		//client.close();
 		});
+		wait = 0.250;
+        // console.log('Waiting for ' + wait + ' seconds');
+        window.setTimeout(function() {
+            callback();
+        }, wait*1000);
    };
    
    // Send land
-   ext.land = function () {
+   ext.land = function (callback) {
    
    var message = new Buffer('land');
 
 	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 		//if (err) throw err;
 		//client.close();
-		});   
+		}); 
+		wait = 0.250;
+        // console.log('Waiting for ' + wait + ' seconds');
+        window.setTimeout(function() {
+            callback();
+        }, wait*1000);  
    };
    
     // Send set speed
-   ext.setspeed = function (val) {
+   ext.setspeed = function (val,callback) {
    
    var message = new Buffer('speed ' + val);
 
@@ -167,10 +180,15 @@
 		//if (err) throw err;
 		//client.close();
 		});   
+		wait = 0.250;
+        // console.log('Waiting for ' + wait + ' seconds');
+        window.setTimeout(function() {
+            callback();
+        }, wait*1000);
    };
  
    // Send set fly direction and distance to fly
-   ext.flydir = function (direction, distance) {
+   ext.flydir = function (direction, distance, callback) {
    
    var message = new Buffer(direction + ' ' + distance);
 
@@ -178,10 +196,15 @@
 		//if (err) throw err;
 		//client.close();
 		});
+		wait = 0.250;
+        // console.log('Waiting for ' + wait + ' seconds');
+        window.setTimeout(function() {
+            callback();
+        }, wait*1000);
    };
    
    // Send rotation direction and rotation angle
-   ext.rotation = function (direction, angle) {
+   ext.rotation = function (direction, angle, callback) {
    
    var message = new Buffer(direction + ' ' + angle);
 
@@ -189,16 +212,26 @@
 		//if (err) throw err;
 		//client.close();
 		});
+		wait = 0.250;
+        // console.log('Waiting for ' + wait + ' seconds');
+        window.setTimeout(function() {
+            callback();
+        }, wait*1000);
    };
 
    // Send set flip Direction
-   ext.setflipDirection = function (val) {
+   ext.setflipDirection = function (val,callback) {
    
    var message = new Buffer('flip ' + val.charAt(0));
 
    client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 		//if (err) throw err;
 		//client.close();
+		wait = 0.250;
+        // console.log('Waiting for ' + wait + ' seconds');
+        window.setTimeout(function() {
+            callback();
+        }, wait*1000);
    });
    
    };
@@ -236,12 +269,12 @@
 		['r', 'Data', 'Data'],
 		['w', 'Send command', 'sendcommand'],
 		['r', 'Read %m.readcommand', 'readData', 'speed?'],
-		[' ', 'take off', 'takeoff'],
-		[' ', 'land', 'land'],
-		[' ', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
-		[' ', 'rotate %m.rotation with angle %n', 'rotation', 'cw', '90'],
-		[' ', 'flip direction %m.flipDirection', 'setflipDirection', 'forward'],
-		[' ', 'set speed %n', 'setspeed', 80]	
+		['w', 'take off', 'takeoff'],
+		['w', 'land', 'land'],
+		['w', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
+		['w', 'rotate %m.rotation with angle %n', 'rotation', 'cw', '90'],
+		['w', 'flip direction %m.flipDirection', 'setflipDirection', 'forward'],
+		['w', 'set speed %n', 'setspeed', 80]	
  	  ],
  	  'menus': {
         'flipDirection': ['left', 'right', 'forward', 'backward'],
