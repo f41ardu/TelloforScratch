@@ -117,8 +117,11 @@
             connected = true; // connected
    };
    
+   // Functions for block with type 'w' will get a callback function as the 
+   // final argument. This should be called to indicate that the block can
+   // stop waiting.
    // Send command and set Tello into SDK mode
-   ext.sendcommand = function () {
+   ext.sendcommand = function (callback) {
    
    var message = new Buffer('command');
 
@@ -126,6 +129,11 @@
 		//if (err) throw err;
 		//client.close();
 		});
+		wait = 0.250;
+        // console.log('Waiting for ' + wait + ' seconds');
+        window.setTimeout(function() {
+            callback();
+        }, wait*1000);
    };
    
    // Send takeoff
@@ -188,40 +196,30 @@
    
    var message = new Buffer('flip ' + val.charAt(0));
 
-	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
+   client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 		//if (err) throw err;
 		//client.close();
-		});
+   });
    
    };
    
    // read Data improved for all Tello return codes, flight and state commands
    ext.readData = function (val) {
-      
-      var message = new Buffer(val);
-      if (val == 'OK' ) {
-	    // for all flight commands 
-	    // we need a wait statement here
-	    var test = getOK.trim();
-      } else {
-
-	     client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-			});
-	    // for all state commands
-	    // we need a wait statement here 		
-	    var test = getData.trim();
-      }
-      
-      // getData = ""; // clear getDate
-      return test;
-
+     
+     var message = new Buffer(val);
+	 client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
+	 });
+	 // we need a wait statement here 		
+	 var test = getData.trim();
+     getData = ""; // clear getDate
+     return test;
    };
 
 // Get result (to be removed from code later) 
    ext.Data = function () {
-   var test = getOK.trim();
-   getData = ""; 
-   return test;
+	var test = getOK.trim();
+	getOK = ""; 
+	return test;
    };
    
 
@@ -236,8 +234,8 @@
     blocks: [
 		[' ', 'Receiver', 'cnct'],
 		['r', 'Data', 'Data'],
-		[' ', 'Send command', 'sendcommand'],
-		['r', 'Read %m.readcommand', 'readData', 'OK'],
+		['w', 'Send command', 'sendcommand'],
+		['r', 'Read %m.readcommand', 'readData', 'speed?'],
 		[' ', 'take off', 'takeoff'],
 		[' ', 'land', 'land'],
 		[' ', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
@@ -249,7 +247,7 @@
         'flipDirection': ['left', 'right', 'forward', 'backward'],
         'direction'    : ['up', 'down', 'forward', 'backward', 'left', 'right'],
         'rotation'     : ['cw', 'ccw'],
-        'readcommand'  : ['OK','speed?','battery?','time?','height?','temp?','attitude?','baro?','acceleration?','tof?']
+        'readcommand'  : ['speed?','battery?','time?','height?','temp?','attitude?','baro?','acceleration?','tof?']
     },
     url: 'https://github.com/f41ardu',
     displayName: 'Tello SDK'
