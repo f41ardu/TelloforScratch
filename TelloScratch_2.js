@@ -85,6 +85,8 @@
 	    // listen on all IP adresses
 		server2.bind(9000,listenerHOST);
 		connected = true; 	
+	} else {
+		alert ("Scratch already listening on udp ports"); 
 	}
    };		    
   
@@ -114,10 +116,15 @@
    ext.sendcommand = function (callback) {
    
    var message = new Buffer('command');
-
+    
+     if (connected == false) {
+            alert("Tello not Connected! \n \n Establish WIFI connection first.");
+		}
 	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-		//if (err) throw err;
-		//client.close();
+		if (err) { 
+			alert("Command could not send: " + err);
+			client.close();
+			}
 		});
 		wait = 0.250;
         // console.log('Waiting for ' + wait + ' seconds');
@@ -130,7 +137,7 @@
    ext.takeoff = function (callback) {
    
    var message = new Buffer('takeoff');
-
+     
 	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 		//if (err) throw err;
 		//client.close();
