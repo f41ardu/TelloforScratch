@@ -28,3 +28,22 @@ Require is now a dictionary in repeater.js to send response
 to the correct listener.  
 
 
+### Extension Installation - Using File Menu ###
+
+To install using this method, while holding the Shift key 
+on your keyboard, click on the File menu choice at the top 
+of the Scratch 2 window. Select Import Experimental Extension
+and you will be prompted for a URL to load the file. 
+
+You need to supply the full path and file name of the JavaScript 
+extension for the URL.  
+
+
+The path and file I'm using is:
+
+`/home/pi/code/TelloforScratch/TelloScratch_2.js`
+
+Please use your own path!
+ 
+ 
+ 
