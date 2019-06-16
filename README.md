@@ -27,6 +27,28 @@ Now a second repeater is required to test the respons behaviour.
 Require is now a dictionary in repeater.js to send response 
 to the correct listener.  
 
+### Preparation ### 
+
+Using experimental extensions in Scratch2 require nodejs installed. 
+
+If not already installed first install nodejs on your Raspberry PI.
+
+Check if nodejs is installed?
+
+`$ node -v
+v8.11.1`
+
+or any other release. 
+
+In case nodejs is not installed. 
+
+`$ node -v
+bash: node: command not found
+`
+Install nodejs: 
+
+`$ sudo apt install -y nodejs`
+
 
 ### Extension Installation - Using File Menu ###
 
