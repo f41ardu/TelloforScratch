@@ -9,9 +9,12 @@ Launch repeat_dictionary.js
 
 Example: 
 
-{ 'speed?': 8890, 
-  'battery?': 8890, 
-  'time?': 8890, 
+{ 'speed?': 8890,
+ 
+  'battery?': 8890,
+   
+  'time?': 8890,
+   
   'height?': 8890, 
   'temp?': 8890, 
   'attitude?': 8890, 
