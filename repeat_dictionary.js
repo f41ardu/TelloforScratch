@@ -11,6 +11,11 @@ var initial = new Buffer('OK');
   'battery?' : 8890, 
   'time?' : 8890, 
   'height?' : 8890, 
+  'temp?' : 8890,
+  'attitude?' : 8890,
+  'baro?' : 8890,
+  'accleration?' :, 8890,
+  'tof?' : 8890, 
   'command' : 9000, 
 };
 
