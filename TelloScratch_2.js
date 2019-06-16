@@ -53,7 +53,7 @@
    ext.cnct = function() {	
    if (connected == false) {
 		server1.on("error", function (err) {
-			console.log("server error:\n" + err.stack);
+			alert("server error:\n" + err.stack);
 			server.close();
 		});
 
@@ -70,7 +70,7 @@
 		
 	    // create server 2	
 		server2.on("error", function (err) {
-			console.log("server error:\n" + err.stack);
+			alert("server error:\n" + err.stack);
 			server.close();
 		});
 
