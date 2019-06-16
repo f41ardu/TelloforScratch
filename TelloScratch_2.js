@@ -51,7 +51,7 @@
 
    // Scratch UDP Listener (experimental) 
    ext.cnct = function() {	
-
+   if (connected == false) {
 		server1.on("error", function (err) {
 			console.log("server error:\n" + err.stack);
 			server.close();
@@ -83,8 +83,9 @@
 		server2.on("listening", function () {
 			myStatus = 2; });
 	    // listen on all IP adresses
-		server2.bind(9000,listenerHOST);	
-		
+		server2.bind(9000,listenerHOST);
+		connected = true; 	
+	}
    };		    
   
    // end UDP Listener (experimental)
@@ -104,20 +105,6 @@
 
    ext._getStatus = function() {
      return {status: myStatus, msg: 'Ready'};
-   };
-   
-   // Send command 'command' and set Tello into SDK mode
-   ext.command = function () {
-   
-   var message = new Buffer('command');
-
-	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-	//	if (err) throw err;
-	//	client.close();
-	});
-            // change status ligth from yellow to green
-            myStatus = 2;
-            connected = true; // connected
    };
    
    // Functions for block with type 'w' will get a callback function as the 
