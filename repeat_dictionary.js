@@ -14,7 +14,7 @@ var initial = new Buffer('OK');
   'temp?' : 8890,
   'attitude?' : 8890,
   'baro?' : 8890,
-  'accleration?' :, 8890,
+  'acceleration?' : 8890,
   'tof?' : 8890, 
   'command' : 9000, 
 };
