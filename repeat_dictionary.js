@@ -42,11 +42,15 @@ server.on("message", function (msg, rinfo) {
 	        var port = dict[msg];
 	        console.log("Dict: ", port);
 	        var message = new Buffer( initial + " " + msg );
-	    if (port == "9000" || port == "8890") {
+			if (port == "8890") { 
+				port = 8890; 
+			} else {
+				port = 9000; 
+			}; 
 		client.send(message, 0, message.length, port, '127.0.0.1', function(err, bytes) {
 		if (err) throw err;
 		console.log('UDP message ' + message +' sent to ' + '127.0.0.1' +':'+ port);
-		});}
+		});
 });
 
 server.on("listening", function () {

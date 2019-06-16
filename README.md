@@ -45,7 +45,9 @@ In case nodejs is not installed.
 `$ node -v
 bash: node: command not found
 `
+
 Install nodejs: 
+
 
 `$ sudo apt install -y nodejs`
 
