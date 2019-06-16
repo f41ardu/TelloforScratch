@@ -25,15 +25,14 @@
   */
  
  (function(ext) {
-   // /home/pi/code/TelloforScratch/TelloScratch.js
+   // /home/pi/code/TelloforScratch/TelloScratch_3.js
    // Tello udp port and IP address
-   var PORT = 8889 ;
+   var PORT = 8889;
    var HOST = '192.168.10.1'; // Tello IP
    // var HOST = '127.0.0.1'; // Test localhost (debug mode)
    
    // Scratch listener port 
-   var listenerPort = 8890;
-   var listenerPortOK = 9000;  
+   var listenerPortOK = 8889;  
    var listenerHOST = '0.0.0.0';
 
    // udp connector  
@@ -53,21 +52,6 @@
    // Scratch UDP Listener (experimental) 
    ext.cnct = function() {	
    if (connected == false) {
-		server1.on("error", function (err) {
-			alert("server error:\n" + err.stack);
-			server.close();
-		});
-
-		server1.on("message", function (msg, rinfo) {
-			//setReceived("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port); 
-			getData = ' '+msg+' '; 
-			//myStatus = 1;         
-			});
-
-		server1.on("listening", function () {
-			myStatus = 2; });
-	    // listen on all IP adresses
-		server1.bind(listenerPort,listenerHOST);
 		
 	    // create server 2	
 		server2.on("error", function (err) {
@@ -96,8 +80,8 @@
    // Cleanup function when the extension is unloaded
 
    ext._shutdown = function() {
-	   server1.close();
-	   server2.close()
+	   server2.close();
+	 //  server1.close();
    };
 
    // Status reporting code
@@ -239,14 +223,14 @@
 	 });
 	 // we need a wait statement here 		
 	 var test = getOK.trim();
-     getData = ""; // clear getDate
+     getOK = ""; // clear 
      return test;
    };
 
 // Get result (to be removed from code later) 
    ext.Data = function () {
 	var test = getOK.trim();
-	getOK = ""; 
+	getOK = ""; // clear 
 	return test;
    };
    
