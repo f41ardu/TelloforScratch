@@ -276,8 +276,8 @@
         'rotation'     : ['cw', 'ccw'],
         'readcommand'  : ['speed?','battery?','time?','height?','temp?','attitude?','baro?','acceleration?','tof?']
     },
-    url: 'https://github.com/f41ardu',
-    displayName: 'Tello SDK'
+    url: 'https://github.com/f41ardu/TelloforScratch',
+    displayName: 'Tello SDK 1.3.0.0'
 };
 
    // Register the extension
