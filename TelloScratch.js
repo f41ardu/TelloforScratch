@@ -29,11 +29,10 @@
    // Tello udp port and IP address
    var PORT = 8889 ;
    var HOST = '192.168.10.1'; // Tello IP
-   // var HOST = '127.0.0.1'; // Test localhost (debug mode)
+   //var HOST = '127.0.0.1'; // Test localhost (debug mode)
    
    // Scratch listener port 
-   var listenerPort = 8890;
-   var listenerPortOK = 9000;  
+   var listenerPort = 8890; 
    var listenerHOST = '0.0.0.0';
 
    // udp connector  
@@ -42,13 +41,11 @@
    var client = dgram.createSocket('udp4');
    // server connector (receive Telle response) 
    var server1 = dgram.createSocket('udp4');
-   var server2 = dgram.createSocket('udp4');
    
    // initial variables
    var myStatus = 1; // initially set status to yellow
    var connected = false; // initially set connected to false
    var getData = ' '; // initial set blank 
-   var getOK = ' '; // initial set blank
 
    // Scratch UDP Listener (experimental) 
    ext.cnct = function() {	
@@ -59,32 +56,13 @@
 		});
 
 		server1.on("message", function (msg, rinfo) {
-			//setReceived("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port); 
 			getData = ' '+msg+' '; 
-			//myStatus = 1;         
 			});
 
 		server1.on("listening", function () {
 			myStatus = 2; });
 	    // listen on all IP adresses
-		server1.bind(listenerPort,listenerHOST);
-		
-	    // create server 2	
-		server2.on("error", function (err) {
-			alert("server error:\n" + err.stack);
-			server.close();
-		});
-
-		server2.on("message", function (msg, rinfo) {
-			//setReceived("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port); 
-			getOK = ' '+msg+' '; 
-			//myStatus = 1;         
-			});
-
-		server2.on("listening", function () {
-			myStatus = 2; });
-	    // listen on all IP adresses
-		server2.bind(listenerPortOK,listenerHOST);
+	    server1.bind(listenerPort,listenerHOST);
 		connected = true; 	
 	} else {
 		alert ("Scratch already listening on udp ports"); 
@@ -97,7 +75,6 @@
 
    ext._shutdown = function() {
 	   server1.close();
-	   server2.close()
    };
 
    // Status reporting code
@@ -110,9 +87,6 @@
      return {status: myStatus, msg: 'Ready'};
    };
    
-   // Functions for block with type 'w' will get a callback function as the 
-   // final argument. This should be called to indicate that the block can
-   // stop waiting.
    // Send command and set Tello into SDK mode
    ext.sendcommand = function (callback) {
    
@@ -127,11 +101,6 @@
 			client.close();
 			}
 		});
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
    };
    
    // Send takeoff
@@ -143,11 +112,6 @@
 		//if (err) throw err;
 		//client.close();
 		});
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
    };
    
    // Send land
@@ -159,11 +123,6 @@
 		//if (err) throw err;
 		//client.close();
 		}); 
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);  
    };
    
     // Send set speed
@@ -175,11 +134,6 @@
 		//if (err) throw err;
 		//client.close();
 		});   
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
    };
  
    // Send set fly direction and distance to fly
@@ -191,11 +145,6 @@
 		//if (err) throw err;
 		//client.close();
 		});
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
    };
    
    // Send rotation direction and rotation angle
@@ -207,11 +156,6 @@
 		//if (err) throw err;
 		//client.close();
 		});
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
    };
 
    // Send set flip Direction
@@ -222,11 +166,6 @@
    client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 		//if (err) throw err;
 		//client.close();
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
    });
    
    };
@@ -235,19 +174,12 @@
    ext.readData = function (val) {
      
      var message = new Buffer(val);
-	 client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-	 });
-	 // we need a wait statement here 		
-	 var test = getOK.trim();
-     getData = ""; // clear getDate
+	 //client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
+	 //});
+	 		
+	 var test = getData.trim();
+     // to be implented split test 
      return test;
-   };
-
-// Get result (to be removed from code later) 
-   ext.Data = function () {
-	var test = getOK.trim();
-	getOK = ""; 
-	return test;
    };
    
 
@@ -261,15 +193,14 @@
    var descriptor = {
     blocks: [
 		[' ', 'Receiver', 'cnct'],
-		['r', 'Data', 'Data'],
-		['w', 'Send command', 'sendcommand'],
+		[' ', 'Send command', 'sendcommand'],
 		['r', 'Read %m.readcommand', 'readData', 'speed?'],
-		['w', 'take off', 'takeoff'],
-		['w', 'land', 'land'],
-		['w', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
-		['w', 'rotate %m.rotation with angle %n', 'rotation', 'cw', '90'],
-		['w', 'flip direction %m.flipDirection', 'setflipDirection', 'forward'],
-		['w', 'set speed %n', 'setspeed', 80]	
+		[' ', 'take off', 'takeoff'],
+		[' ', 'land', 'land'],
+		[' ', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
+		[' ', 'rotate %m.rotation with angle %n', 'rotation', 'cw', '90'],
+		[' ', 'flip direction %m.flipDirection', 'setflipDirection', 'forward'],
+		[' ', 'set speed %n', 'setspeed', 80]	
  	  ],
  	  'menus': {
         'flipDirection': ['left', 'right', 'forward', 'backward'],
