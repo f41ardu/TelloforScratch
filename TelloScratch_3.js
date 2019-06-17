@@ -29,12 +29,12 @@
    // Tello udp port and IP address
    var PORT = 8889;
    var HOST = '192.168.10.1'; // Tello IP
-   // var HOST = '127.0.0.1'; // Test localhost (debug mode)
+   //var HOST = '127.0.0.1'; // Test localhost (debug mode)
    
    // Scratch listener port 
-   var listenerPortOK = 8889;  
+   var listenerPort = 8890;  
    var listenerHOST = '0.0.0.0';
-
+   var wait = 0.050;  // (50 ms) 
    // udp connector  
    var dgram = require('dgram');
    // client connector (send commands) 
@@ -48,11 +48,28 @@
    var connected = false; // initially set connected to false
    var getData = ' '; // initial set blank 
    var getOK = ' '; // initial set blank
+   var test; 
 
    // Scratch UDP Listener (experimental) 
    ext.cnct = function() {	
    if (connected == false) {
-		
+
+		server1.on("error", function (err) {
+			alert("server error:\n" + err.stack);
+			server.close();
+		});
+
+		server1.on("message", function (msg, rinfo) {
+			//setReceived("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port); 
+			getData = ' '+msg+' '; 
+			//myStatus = 1;         
+			});
+
+		server1.on("listening", function () {
+			myStatus = 2; });
+	    // listen on all IP adresses
+		server1.bind(listenerPort,listenerHOST);
+
 	    // create server 2	
 		server2.on("error", function (err) {
 			alert("server error:\n" + err.stack);
@@ -68,7 +85,7 @@
 		server2.on("listening", function () {
 			myStatus = 2; });
 	    // listen on all IP adresses
-		server2.bind(listenerPortOK,listenerHOST);
+		server2.bind(PORT,listenerHOST);
 		connected = true; 	
 	} else {
 		alert ("Scratch already listening on udp ports"); 
@@ -80,8 +97,8 @@
    // Cleanup function when the extension is unloaded
 
    ext._shutdown = function() {
-	   server2.close();
-	 //  server1.close();
+	   server1.close();
+	   server2.close()
    };
 
    // Status reporting code
@@ -111,11 +128,11 @@
 			client.close();
 			}
 		});
-		wait = 0.250;
         // console.log('Waiting for ' + wait + ' seconds');
         window.setTimeout(function() {
             callback();
         }, wait*1000);
+       test = getOK.trim();
    };
    
    // Send takeoff
@@ -127,7 +144,6 @@
 		//if (err) throw err;
 		//client.close();
 		});
-		wait = 0.250;
         // console.log('Waiting for ' + wait + ' seconds');
         window.setTimeout(function() {
             callback();
@@ -143,7 +159,6 @@
 		//if (err) throw err;
 		//client.close();
 		}); 
-		wait = 0.250;
         // console.log('Waiting for ' + wait + ' seconds');
         window.setTimeout(function() {
             callback();
@@ -159,7 +174,6 @@
 		//if (err) throw err;
 		//client.close();
 		});   
-		wait = 0.250;
         // console.log('Waiting for ' + wait + ' seconds');
         window.setTimeout(function() {
             callback();
@@ -175,7 +189,6 @@
 		//if (err) throw err;
 		//client.close();
 		});
-		wait = 0.250;
         // console.log('Waiting for ' + wait + ' seconds');
         window.setTimeout(function() {
             callback();
@@ -191,7 +204,6 @@
 		//if (err) throw err;
 		//client.close();
 		});
-		wait = 0.250;
         // console.log('Waiting for ' + wait + ' seconds');
         window.setTimeout(function() {
             callback();
@@ -206,7 +218,6 @@
    client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 		//if (err) throw err;
 		//client.close();
-		wait = 0.250;
         // console.log('Waiting for ' + wait + ' seconds');
         window.setTimeout(function() {
             callback();
@@ -223,14 +234,14 @@
 	 });
 	 // we need a wait statement here 		
 	 var test = getOK.trim();
-     getOK = ""; // clear 
+     getOK = ""; // clear getDate
      return test;
    };
 
 // Get result (to be removed from code later) 
    ext.Data = function () {
-	var test = getOK.trim();
-	getOK = ""; // clear 
+	// var test = getOK.trim();
+	getOK = ""; 
 	return test;
    };
    
