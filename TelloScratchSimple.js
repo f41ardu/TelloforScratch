@@ -28,8 +28,8 @@
    // /home/pi/code/TelloforScratch/TelloScratchSimple.js
    // Tello udp port and IP address
    var PORT = 8889 ;
-   var HOST = '192.168.10.1'; // Tello IP
-   // var HOST = '127.0.0.1'; // Test localhost (debug mode)
+   // var HOST = '192.168.10.1'; // Tello IP
+   var HOST = '127.0.0.1'; // Test localhost (debug mode)
    
    // udp connector  
    var dgram = require('dgram');
@@ -70,7 +70,7 @@
    };
    
    // Send takeoff
-   ext.takeoff = function (callback) {
+   ext.takeoff = function () {
    
    var message = new Buffer('takeoff');
      
@@ -81,7 +81,7 @@
    };
    
    // Send land
-   ext.land = function (callback) {
+   ext.land = function () {
    
    var message = new Buffer('land');
 
@@ -92,7 +92,7 @@
    };
    
     // Send set speed
-   ext.setspeed = function (val,callback) {
+   ext.setspeed = function (val) {
    
    var message = new Buffer('speed ' + val);
 
@@ -103,7 +103,7 @@
    };
  
    // Send set fly direction and distance to fly
-   ext.flydir = function (direction, distance, callback) {
+   ext.flydir = function (direction, distance) {
    
    var message = new Buffer(direction + ' ' + distance);
 
@@ -114,7 +114,7 @@
    };
    
    // Send rotation direction and rotation angle
-   ext.rotation = function (direction, angle, callback) {
+   ext.rotation = function (direction, angle) {
    
    var message = new Buffer(direction + ' ' + angle);
 
