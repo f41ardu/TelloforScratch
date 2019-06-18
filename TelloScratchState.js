@@ -25,7 +25,7 @@
   */
  
  (function(ext) {
-   // /home/pi/code/TelloforScratch/TelloScratch_2.js
+   // /home/pi/code/TelloforScratch/TelloScratchState.js
    // Tello udp port and IP address
    var PORT = 8889 ;
    //var HOST = '192.168.10.1'; // Tello IP
@@ -33,7 +33,7 @@
    
    // Scratch listener port 
    var listenerPort = 8890;  
-   var listenerHOST = '127.0.0.1';
+   var listenerHOST = '0.0.0.0';
 
    // udp connector  
    var dgram = require('dgram');
@@ -41,14 +41,13 @@
    var client = dgram.createSocket('udp4');
    // server connector (receive Telle response) 
    var server1 = dgram.createSocket('udp4');
-   var server2 = dgram.createSocket('udp4');
+   
    
    // initial variables
    var myStatus = 1; // initially set status to yellow
    var connected = false; // initially set connected to false
    var getData = ' '; // initial set blank 
-   var getOK = ' '; // initial set blank
-
+   
    // Scratch UDP Listener (experimental) 
    ext.cnct = function() {	
    if (connected == false) {
@@ -67,23 +66,6 @@
 			myStatus = 2; });
 	    // listen on all IP adresses
 		server1.bind(listenerPort,listenerHOST);
-		
-	    // create server 2	
-		server2.on("error", function (err) {
-			alert("server error:\n" + err.stack);
-			server.close();
-		});
-
-		server2.on("message", function (msg, rinfo) {
-			//setReceived("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port); 
-			getOK = ' '+msg+' '; 
-			//myStatus = 1;         
-			});
-
-		server2.on("listening", function () {
-			myStatus = 2; });
-	    // listen on all IP adresses
-		server2.bind(9000,listenerHOST);
 		connected = true; 	
 	} else {
 		alert ("Scratch already listening on udp ports"); 
@@ -96,7 +78,6 @@
 
    ext._shutdown = function() {
 	   server1.close();
-	   server2.close()
    };
 
    // Status reporting code
@@ -113,7 +94,7 @@
    // final argument. This should be called to indicate that the block can
    // stop waiting.
    // Send command and set Tello into SDK mode
-   ext.sendcommand = function (callback) {
+   ext.sendcommand = function () {
    
    var message = new Buffer('command');
     
@@ -126,15 +107,10 @@
 			client.close();
 			}
 		});
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
    };
    
    // Send takeoff
-   ext.takeoff = function (callback) {
+   ext.takeoff = function () {
    
    var message = new Buffer('takeoff');
      
@@ -142,31 +118,21 @@
 		//if (err) throw err;
 		//client.close();
 		});
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
    };
    
    // Send land
-   ext.land = function (callback) {
+   ext.land = function () {
    
    var message = new Buffer('land');
 
 	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 		//if (err) throw err;
 		//client.close();
-		}); 
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);  
+		});   
    };
    
     // Send set speed
-   ext.setspeed = function (val,callback) {
+   ext.setspeed = function (val) {
    
    var message = new Buffer('speed ' + val);
 
@@ -174,15 +140,10 @@
 		//if (err) throw err;
 		//client.close();
 		});   
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
    };
  
    // Send set fly direction and distance to fly
-   ext.flydir = function (direction, distance, callback) {
+   ext.flydir = function (direction, distance) {
    
    var message = new Buffer(direction + ' ' + distance);
 
@@ -190,15 +151,10 @@
 		//if (err) throw err;
 		//client.close();
 		});
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
    };
    
    // Send rotation direction and rotation angle
-   ext.rotation = function (direction, angle, callback) {
+   ext.rotation = function (direction, angle) {
    
    var message = new Buffer(direction + ' ' + angle);
 
@@ -206,26 +162,16 @@
 		//if (err) throw err;
 		//client.close();
 		});
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
    };
 
    // Send set flip Direction
-   ext.setflipDirection = function (val,callback) {
+   ext.setflipDirection = function (val) {
    
    var message = new Buffer('flip ' + val.charAt(0));
 
    client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 		//if (err) throw err;
 		//client.close();
-		wait = 0.250;
-        // console.log('Waiting for ' + wait + ' seconds');
-        window.setTimeout(function() {
-            callback();
-        }, wait*1000);
    });
    
    };
@@ -233,22 +179,12 @@
    // read Data improved for all Tello return codes, flight and state commands
    ext.readData = function (val) {
      
-     var message = new Buffer(val);
-	 client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-	 });
-	 // we need a wait statement here 		
+     var message = new Buffer(val); 		
 	 var test = getData.trim();
+	 // interpreter for data will be implemented later
      getData = ""; // clear getDate
      return test;
    };
-
-// Get result (to be removed from code later) 
-   ext.Data = function () {
-	var test = getOK.trim();
-	getOK = ""; 
-	return test;
-   };
-   
 
    // added function to support the Start The Program block
    ext.goGreen = function() {
@@ -260,15 +196,14 @@
    var descriptor = {
     blocks: [
 		[' ', 'Receiver', 'cnct'],
-		['r', 'Data', 'Data'],
-		['w', 'Send command', 'sendcommand'],
+		[' ', 'Send command', 'sendcommand'],
 		['r', 'Read %m.readcommand', 'readData', 'speed?'],
-		['w', 'take off', 'takeoff'],
-		['w', 'land', 'land'],
-		['w', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
-		['w', 'rotate %m.rotation with angle %n', 'rotation', 'cw', '90'],
-		['w', 'flip direction %m.flipDirection', 'setflipDirection', 'forward'],
-		['w', 'set speed %n', 'setspeed', 80]	
+		[' ', 'take off', 'takeoff'],
+		[' ', 'land', 'land'],
+		[' ', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
+		[' ', 'rotate %m.rotation with angle %n', 'rotation', 'cw', '90'],
+		[' ', 'flip direction %m.flipDirection', 'setflipDirection', 'forward'],
+		[' ', 'set speed %n', 'setspeed', 80]	
  	  ],
  	  'menus': {
         'flipDirection': ['left', 'right', 'forward', 'backward'],
@@ -281,5 +216,5 @@
 };
 
    // Register the extension
-   ScratchExtensions.register('Tello SDK', descriptor, ext);
+   ScratchExtensions.register('Tello SDK 0.6.0', descriptor, ext);
  })({});
