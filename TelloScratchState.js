@@ -182,9 +182,32 @@
      var message = new Buffer(val); 		
 	 var test = getData.trim();
 	 // interpreter for data will be implemented later
-     getData = ""; // clear getDate
-     return test;
+     if ( test != '' ) {
+        treturn = test; 
+		} else {
+			treturn = 'empty';
+		}; 
+	 	 
+     return treturn;
    };
+   
+   // read Data improved for all Tello return codes, flight and state commands
+   ext.readValues = function (val) {
+     
+     
+     var message = new Buffer(val); 		
+	 var test = getData.trim();
+	 // interpreter for data will be implemented later
+     if ( test != '' ) {
+        treturn = test;
+        var array = test.split(';').map(function (a) { return a.split(':'); });
+		} else {
+			treturn = 'empty';
+		}; 
+	 	 
+     return parseInt(array[0][1]);
+   };
+
 
    // added function to support the Start The Program block
    ext.goGreen = function() {
@@ -198,6 +221,7 @@
 		[' ', 'Receiver', 'cnct'],
 		[' ', 'Send command', 'sendcommand'],
 		['r', 'Read %m.readcommand', 'readData', 'speed?'],
+		['r', 'Values %m.readcommand', 'readValues', 'speed?'],
 		[' ', 'take off', 'takeoff'],
 		[' ', 'land', 'land'],
 		[' ', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
