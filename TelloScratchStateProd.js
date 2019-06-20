@@ -49,12 +49,12 @@
    var getData = ' '; // initial set blank 
    var dict = {
 	'speed?' : 4, // 5, 6 vector length
-	'battery?' : 11, 
+	'battery?' : 11, // % percentage
 	'time?' : 13, // Motors on time
 	'height?' : 10, 
 	'temp?' : 7, // 8 average
 	'attitude?' : ??,
-	'baro?' : 12,
+	'baro?' : 12, // baramoter measurement cm
 	'acceleration?' : 14, // 15, 16 vector length
 	'tof?' : 9, // distance cm
    }; 
