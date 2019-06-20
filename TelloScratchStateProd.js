@@ -47,6 +47,17 @@
    var myStatus = 1; // initially set status to yellow
    var connected = false; // initially set connected to false
    var getData = ' '; // initial set blank 
+   var dict = {
+	'speed?' : 4, // 5, 6 vector length
+	'battery?' : 11, 
+	'time?' : 13, // Motors on time
+	'height?' : 10, 
+	'temp?' : 7, // 8 average
+	'attitude?' : ??,
+	'baro?' : 12,
+	'acceleration?' : 14, // 15, 16 vector length
+	'tof?' : 9, // distance cm
+   }; 
    
    // Scratch UDP Listener (experimental) 
    ext.cnct = function() {	
