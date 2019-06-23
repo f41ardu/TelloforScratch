@@ -28,8 +28,8 @@
    // /home/pi/code/TelloforScratch/TelloScratchStateProd.js
    // Tello udp port and IP address
    var PORT = 8889 ;
-   var HOST = '192.168.10.1'; // Tello IP
-   //var HOST = '127.0.0.1'; // Test localhost (debug mode)
+   //var HOST = '192.168.10.1'; // Tello IP
+   var HOST = '127.0.0.1'; // Test localhost (debug mode)
    
    // Scratch listener port 
    var listenerPort = 8890;  
@@ -53,7 +53,7 @@
 	'time?' : 13, // Motors on time
 	'height?' : 10, 
 	'temp?' : 7, // 8 average
-	'attitude?' : ??,
+	'attitude?' : 27,
 	'baro?' : 12, // baramoter measurement cm
 	'acceleration?' : 14, // 15, 16 vector length
 	'tof?' : 9, // distance cm
@@ -235,6 +235,7 @@
 		['r', 'Values %m.readcommand', 'readValues', 'speed?'],
 		[' ', 'take off', 'takeoff'],
 		[' ', 'land', 'land'],
+		[' ', 'emergency', 'emergency'],
 		[' ', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
 		[' ', 'rotate %m.rotation with angle %n', 'rotation', 'cw', '90'],
 		[' ', 'flip direction %m.flipDirection', 'setflipDirection', 'forward'],
@@ -251,5 +252,5 @@
 };
 
    // Register the extension
-   ScratchExtensions.register('Tello SDK 0.6.0', descriptor, ext);
+   ScratchExtensions.register('Tello SDK 0.6.1', descriptor, ext);
  })({});
