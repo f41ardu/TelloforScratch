@@ -205,18 +205,22 @@
    // read Data improved for all Tello return codes, flight and state commands
    ext.readValues = function (val) {
      
-     
-     var message = new Buffer(val); 		
 	 var test = getData.trim();
 	 // interpreter for data will be implemented later
      if ( test != '' ) {
         treturn = test;
         var array = test.split(';').map(function (a) { return a.split(':'); });
-		} else {
-			treturn = 'empty';
-		}; 
-	 	 
-     return parseInt(array[0][1]);
+	    
+	 }; 
+	 var select = dict[val]; 
+	 // return speed 
+	 if (select == 4 ) {  
+		 var x = array[select][1];
+		 var y = array[select+1][1];
+		 var z = array[select+2][1] 
+	     return parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
+    // parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2);
+	 }
    };
 
 
