@@ -1,1 +1,2 @@
 pitch:34;roll:-127;yaw:69;vgx:0;vgy:0;vgz:0;templ:81;temph:83;tof:145;h:0;bat:10;baro:1.06;time:2;agx:727.00;agy:434.00;agz:447.00;
+0          1         2      3     4    5     6          7      8       9   10      11       12

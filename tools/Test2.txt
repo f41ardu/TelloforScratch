@@ -1,15 +1,15 @@
-1  - pitch:34;
-2  - roll:-127;
-3  - yaw:69;
+0  - pitch:34;
+1  - roll:-127;
+2  - yaw:69;
 
-4  - vgx:0;
-5  - vgy:0;
-6  - vgz:0;
+3  - vgx:0;
+4  - vgy:0;
+5  - vgz:0;
 
-7  - templ:81;
-8  - temph:83;
+6  - templ:81;
+7  - temph:83;
 
-9  - tof:145;
+8  - tof:145;
 
 10 - h:0;
 

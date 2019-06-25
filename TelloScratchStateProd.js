@@ -48,15 +48,15 @@
    var connected = false; // initially set connected to false
    var getData = ' '; // initial set blank 
    var dict = {
-	'speed?' : 4, // 5, 6 vector length
-	'battery?' : 11, // % percentage
-	'time?' : 13, // Motors on time
-	'height?' : 10, 
-	'temp?' : 7, // 8 average
+	'speed?' : 3, // 4, 5 vector length
+	'battery?' : 10, // % percentage
+	'time?' : 12, // Motors on time
+	'height?' : 9, 
+	'temp?' : 6, // 7 average
 	'attitude?' : 27,
-	'baro?' : 12, // baramoter measurement cm
-	'acceleration?' : 14, // 15, 16 vector length
-	'tof?' : 9, // distance cm
+	'baro?' : 11, // baramoter measurement cm
+	'acceleration?' : 0, // 1, 2 vector length
+	'tof?' : 8, // distance cm
    }; 
    
    // Scratch UDP Listener (experimental) 
@@ -213,14 +213,54 @@
 	    
 	 }; 
 	 var select = dict[val]; 
-	 // return speed 
-	 if (select == 4 ) {  
+	 // return acceleration
+	 if ( select == 0 ) {  
 		 var x = array[select][1];
 		 var y = array[select+1][1];
-		 var z = array[select+2][1] 
-	     return parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
+		 var z = array[select+2][1]; 
+	     var wegot = parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
     // parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2);
-	 }
+	 };
+	 // return speed
+	 if ( select == 3 ) {  
+		 var x = array[select][1];
+		 var y = array[select+1][1];
+		 var z = array[select+2][1]; 
+	     var wegot = parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
+    // parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2);
+	 };
+	 if ( select == 6 ) {
+		 var x = parseFloat(array[select][1]);
+		 var y = parseFloat(array[select+1][1]);
+		 var z = (x+y)/2.;
+		 var wegot = z;
+	 };
+	 // tof 
+	 if ( select == 8 ) {
+		 var x = parseFloat(array[select][1]);
+		 var wegot = x;
+	 };
+	 // height 
+	 if ( select == 9 ) {
+		 var x = parseFloat(array[select][1]);
+		 var wegot = x;
+	 };
+	  // battery 
+	 if ( select == 10 ) {
+		 var x = parseFloat(array[select][1]);
+		 var wegot = x;
+	 };
+	  // barometer 
+	 if ( select == 11 ) {
+		 var x = parseFloat(array[select][1]);
+		 var wegot = x;
+	 };
+	  // motor time 
+	 if ( select == 12 ) {
+		 var x = array[select][1];
+		 var wegot = x;
+	 };
+	 return wegot;
    };
 
 

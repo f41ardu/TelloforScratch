@@ -6,4 +6,4 @@ var string = "pitch:34;roll:-127;yaw:69;vgx:0;vgy:0;vgz:0;templ:81;temph:83;tof:
 
 // result = string.split(","); 
 var array = string.split(';').map(function (a) { return a.split(':'); });
-console.log(array[8][1]);
+console.log(array[0][1] + ';' + array[1][1] + ';' + array[2][1]);
