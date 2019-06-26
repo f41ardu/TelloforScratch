@@ -25,11 +25,11 @@
   */
  
  (function(ext) {
-   // /home/pi/code/TelloforScratch/TelloScratchStateProd.js
+   // /home/pi/code/TelloforScratch/TelloScratch.js
    // Tello udp port and IP address
    var PORT = 8889 ;
-   //var HOST = '192.168.10.1'; // Tello IP
-   var HOST = '127.0.0.1'; // Test localhost (debug mode)
+   var HOST = '192.168.10.1'; // Tello IP
+   // var HOST = '127.0.0.1'; // Test localhost (debug mode)
    
    // Scratch listener port 
    var listenerPort = 8890;  
