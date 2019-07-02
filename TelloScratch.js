@@ -28,8 +28,8 @@
    // /home/pi/code/TelloforScratch/TelloScratch.js
    // Tello udp port and IP address
    var PORT = 8889 ;
-   var HOST = '192.168.10.1'; // Tello IP
-   // var HOST = '127.0.0.1'; // Test localhost (debug mode)
+   // var HOST = '192.168.10.1'; // Tello IP
+   var HOST = '127.0.0.1'; // Test localhost (debug mode)
    
    // Scratch listener port 
    var listenerPort = 8890;  
@@ -287,7 +287,7 @@
  	  ],
  	  'menus': {
         'flipDirection': ['left', 'right', 'forward', 'backward'],
-        'direction'    : ['up', 'down', 'forward', 'backward', 'left', 'right'],
+        'direction'    : ['up', 'down', 'forward', 'back', 'left', 'right'],
         'rotation'     : ['cw', 'ccw'],
         'readcommand'  : ['speed?','battery?','time?','height?','temp?','attitude?','baro?','acceleration?','tof?']
     },
