@@ -48,7 +48,7 @@
    var connected = false; // initially set connected to false
    var getData = ' '; // initial set blank 
    var dict = {
-	'speed?' : 3, // 4, 5 vector length
+	'speed?' : 13, // 14, 15 vector length
 	'battery?' : 10, // % percentage
 	'time?' : 12, // Motors on time
 	'height?' : 9, 
@@ -214,7 +214,7 @@
 	 }; 
 	 var select = dict[val]; 
 	 // return acceleration
-	 if ( select == 0 ) {  
+	 if ( select == 13 ) {  
 		 var x = array[select][1];
 		 var y = array[select+1][1];
 		 var z = array[select+2][1]; 
