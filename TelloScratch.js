@@ -28,13 +28,13 @@
    // /home/pi/code/TelloforScratch/TelloScratch.js
    // Tello udp port and IP address
    var PORT = 8889 ;
-   // var HOST = '192.168.10.1'; // Tello IP
-   var HOST = '127.0.0.1'; // Test localhost (debug mode)
+   var HOST = '192.168.10.1'; // Tello IP
+   //var HOST = '127.0.0.1'; // Test localhost (debug mode)
    
    // Scratch listener port 
    var listenerPort = 8890;  
+   // var listenerHOST = '192.168.10.2';
    var listenerHOST = '0.0.0.0';
-
    // udp connector  
    var dgram = require('dgram');
    // client connector (send commands) 
@@ -210,57 +210,58 @@
      if ( test != '' ) {
         treturn = test;
         var array = test.split(';').map(function (a) { return a.split(':'); });
-	    
-	 }; 
+	    } else {
+			return null;
+		};  
+		
 	 var select = dict[val]; 
 	 // return acceleration
 	 if ( select == 13 ) {  
 		 var x = array[select][1];
 		 var y = array[select+1][1];
 		 var z = array[select+2][1]; 
-	     var wegot = parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
-    // parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2);
+	     return parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
 	 };
 	 // return speed
 	 if ( select == 3 ) {  
 		 var x = array[select][1];
 		 var y = array[select+1][1];
 		 var z = array[select+2][1]; 
-	     var wegot = parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
+	     return parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
     // parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2);
 	 };
 	 if ( select == 6 ) {
 		 var x = parseFloat(array[select][1]);
 		 var y = parseFloat(array[select+1][1]);
 		 var z = (x+y)/2.;
-		 var wegot = z;
+		 return  z;
 	 };
 	 // tof 
 	 if ( select == 8 ) {
 		 var x = parseFloat(array[select][1]);
-		 var wegot = x;
+		 return  x;
 	 };
 	 // height 
 	 if ( select == 9 ) {
 		 var x = parseFloat(array[select][1]);
-		 var wegot = x;
+		 return  x;
 	 };
 	  // battery 
 	 if ( select == 10 ) {
 		 var x = parseFloat(array[select][1]);
-		 var wegot = x;
+		 return  x;
 	 };
 	  // barometer 
 	 if ( select == 11 ) {
 		 var x = parseFloat(array[select][1]);
-		 var wegot = x;
+		 return  x;
 	 };
 	  // motor time 
 	 if ( select == 12 ) {
 		 var x = array[select][1];
-		 var wegot = x;
+		 return  x;
 	 };
-	 return wegot;
+	 return null;
    };
 
 
