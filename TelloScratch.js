@@ -33,7 +33,6 @@
    
    // Scratch listener port 
    var listenerPort = 8890;  
-   // var listenerHOST = '192.168.10.2';
    var listenerHOST = '0.0.0.0';
    // udp connector  
    var dgram = require('dgram');
@@ -48,7 +47,9 @@
    var connected = false; // initially set connected to false
    var getData = ' '; // initial set blank 
    var dict = {
-	'acceleration?' : 0, // 1, 2 vector length
+	'pitch?' : 0, // 
+	'roll?'  : 1, 
+	'yaw?'   : 2, 
 	'speed?' : 3, // 4, 5 vector length
 	'temp?' : 6, // 7 average
 	'tof?' : 8, // distance c
@@ -215,12 +216,20 @@
 		};  
 		
 	 var select = dict[val]; 
-	 // return acceleration
+	 // return pitch
 	 if ( select == 0 ) {  
+	 var x = array[select][1];
+		return x;  
+	 };
+	 // return roll
+	 if ( select == 1 ) {  
 		 var x = array[select][1];
-		 var y = array[select+1][1];
-		 var z = array[select+2][1]; 
-	     return parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
+		 return x;  
+	 };
+	 // return yaw
+	 if ( select == 3 ) {  
+		 var x = array[select][1];
+	     return x;  
 	 };
 	 // return speed
 	 if ( select == 3 ) {  
@@ -290,7 +299,7 @@
         'flipDirection': ['left', 'right', 'forward', 'backward'],
         'direction'    : ['up', 'down', 'forward', 'back', 'left', 'right'],
         'rotation'     : ['cw', 'ccw'],
-        'readcommand'  : ['speed?','battery?','time?','height?','temp?','attitude?','baro?','acceleration?','tof?']
+        'readcommand'  : ['speed?','battery?','time?','height?','temp?','attitude?','baro?','acceleration?','tof?', 'pitch?', 'roll?', 'yaw?']
     },
     url: 'https://github.com/f41ardu/TelloforScratch',
     displayName: 'Tello SDK 1.3.0.0'
