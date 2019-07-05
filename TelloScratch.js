@@ -48,15 +48,15 @@
    var connected = false; // initially set connected to false
    var getData = ' '; // initial set blank 
    var dict = {
-	'speed?' : 13, // 14, 15 vector length
-	'battery?' : 10, // % percentage
-	'time?' : 12, // Motors on time
-	'height?' : 9, 
-	'temp?' : 6, // 7 average
-	'attitude?' : 27,
-	'baro?' : 11, // baramoter measurement cm
 	'acceleration?' : 0, // 1, 2 vector length
-	'tof?' : 8, // distance cm
+	'speed?' : 3, // 4, 5 vector length
+	'temp?' : 6, // 7 average
+	'tof?' : 8, // distance c
+	'height?' : 9, 
+	'battery?' : 10, // % percentage
+	'baro?' : 11, // baramoter measurement cm
+	'time?' : 12, // Motors on time
+	'acceleration?' : 13, // acceleration
    }; 
    
    // Scratch UDP Listener (experimental) 
@@ -216,7 +216,7 @@
 		
 	 var select = dict[val]; 
 	 // return acceleration
-	 if ( select == 13 ) {  
+	 if ( select == 0 ) {  
 		 var x = array[select][1];
 		 var y = array[select+1][1];
 		 var z = array[select+2][1]; 
