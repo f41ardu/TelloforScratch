@@ -46,18 +46,19 @@
    var myStatus = 1; // initially set status to yellow
    var connected = false; // initially set connected to false
    var getData = ' '; // initial set blank 
+   // simple dictionary 
    var dict = {
-	'pitch?' : 0, // 
+	'pitch?' : 0, 
 	'roll?'  : 1, 
 	'yaw?'   : 2, 
-	'speed?' : 3, // 4, 5 vector length
-	'temp?' : 6, // 7 average
-	'tof?' : 8, // distance c
-	'height?' : 9, 
+	'speed?' : 3, // 4, and 5 vector length
+	'temp?' : 6, // and 7 average
+	'tof?' : 8, // time of flight
+	'height?' : 9, // height
 	'battery?' : 10, // % percentage
 	'baro?' : 11, // baramoter measurement cm
 	'time?' : 12, // Motors on time
-	'acceleration?' : 13, // acceleration
+	'acceleration?' : 13, // 14, 15 vector length
    }; 
    
    // Scratch UDP Listener (experimental) 
@@ -188,7 +189,7 @@
    
    };
    
-   // read Data improved for all Tello return codes, flight and state commands
+   // read Data and return as string (used for test)
    ext.readData = function (val) {
      
      var message = new Buffer(val); 		
@@ -207,7 +208,7 @@
    ext.readValues = function (val) {
      
 	 var test = getData.trim();
-	 // interpreter for data will be implemented later
+	 
      if ( test != '' ) {
         treturn = test;
         var array = test.split(';').map(function (a) { return a.split(':'); });
@@ -269,6 +270,14 @@
 	 if ( select == 12 ) {
 		 var x = array[select][1];
 		 return  x;
+	 };
+	 // return acceleration
+	 if ( select == 13 ) {  
+		 var x = array[select][1];
+		 var y = array[select+1][1];
+		 var z = array[select+2][1]; 
+	     return parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
+    // parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2);
 	 };
 	 return null;
    };
