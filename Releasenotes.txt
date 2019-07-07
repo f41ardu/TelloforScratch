@@ -1,14 +1,15 @@
-What's New in Version 1.1.0 
+What's New in Version 1.1.1 
 
 * All state information are available now 
 * Extension is now Tello.js 
 * Scratch example is now Scratch/Tello.sb2
-* emergency is not implemented yet 
+* add go and curve command
+* fixed to read yaw
+* add cm and ° in blocks
+* emergency is still not implemented yet 
 
 Bug fixes 
-* backward corrected and working now 
-* Scratch example reorganised
-
+-  
 Know issues
-* yaw show null not yaw value 
+- 
  
