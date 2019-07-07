@@ -65,7 +65,7 @@ extension for the URL.
 
 The path and file I'm using is:
 
-`/home/pi/code/TelloforScratch/TelloScratch.js`
+`/home/pi/code/TelloforScratch/Tello.js`
 
 Please use your own path!
  
