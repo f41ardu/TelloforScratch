@@ -29,12 +29,11 @@
    // Tello udp port and IP address
    var PORT = 8889 ;
    var HOST = '192.168.10.1'; // Tello IP
-   // var HOST = '127.0.0.1'; // Test localhost (debug mode)
+   //var HOST = '127.0.0.1'; // Test localhost (debug mode)
    
    // Scratch listener port 
    var listenerPort = 8890;  
    var listenerHOST = '0.0.0.0';
-
    // udp connector  
    var dgram = require('dgram');
    // client connector (send commands) 
@@ -47,16 +46,19 @@
    var myStatus = 1; // initially set status to yellow
    var connected = false; // initially set connected to false
    var getData = ' '; // initial set blank 
+   // simple dictionary 
    var dict = {
-	'speed?' : 3, // 4, 5 vector length
+	'pitch?' : 0, 
+	'roll?'  : 1, 
+	'yaw?'   : 2, 
+	'speed?' : 3, // 4, and 5 vector length
+	'temp?' : 6, // and 7 average
+	'tof?' : 8, // time of flight
+	'height?' : 9, // height
 	'battery?' : 10, // % percentage
-	'time?' : 12, // Motors on time
-	'height?' : 9, 
-	'temp?' : 6, // 7 average
-	'attitude?' : 27,
 	'baro?' : 11, // baramoter measurement cm
-	'acceleration?' : 0, // 1, 2 vector length
-	'tof?' : 8, // distance cm
+	'time?' : 12, // Motors on time
+	'acceleration?' : 13, // 14, 15 vector length
    }; 
    
    // Scratch UDP Listener (experimental) 
@@ -187,7 +189,7 @@
    
    };
    
-   // read Data improved for all Tello return codes, flight and state commands
+   // read Data and return as string (used for test)
    ext.readData = function (val) {
      
      var message = new Buffer(val); 		
@@ -206,61 +208,78 @@
    ext.readValues = function (val) {
      
 	 var test = getData.trim();
-	 // interpreter for data will be implemented later
+	 
      if ( test != '' ) {
         treturn = test;
         var array = test.split(';').map(function (a) { return a.split(':'); });
-	    
-	 }; 
+	    } else {
+			return null;
+		};  
+		
 	 var select = dict[val]; 
-	 // return acceleration
+	 // return pitch
 	 if ( select == 0 ) {  
+	 var x = array[select][1];
+		return x;  
+	 };
+	 // return roll
+	 if ( select == 1 ) {  
 		 var x = array[select][1];
-		 var y = array[select+1][1];
-		 var z = array[select+2][1]; 
-	     var wegot = parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
-    // parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2);
+		 return x;  
+	 };
+	 // return yaw
+	 if ( select == 3 ) {  
+		 var x = array[select][1];
+	     return x;  
 	 };
 	 // return speed
 	 if ( select == 3 ) {  
 		 var x = array[select][1];
 		 var y = array[select+1][1];
 		 var z = array[select+2][1]; 
-	     var wegot = parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
+	     return parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
     // parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2);
 	 };
 	 if ( select == 6 ) {
 		 var x = parseFloat(array[select][1]);
 		 var y = parseFloat(array[select+1][1]);
 		 var z = (x+y)/2.;
-		 var wegot = z;
+		 return  z;
 	 };
 	 // tof 
 	 if ( select == 8 ) {
 		 var x = parseFloat(array[select][1]);
-		 var wegot = x;
+		 return  x;
 	 };
 	 // height 
 	 if ( select == 9 ) {
 		 var x = parseFloat(array[select][1]);
-		 var wegot = x;
+		 return  x;
 	 };
 	  // battery 
 	 if ( select == 10 ) {
 		 var x = parseFloat(array[select][1]);
-		 var wegot = x;
+		 return  x;
 	 };
 	  // barometer 
 	 if ( select == 11 ) {
 		 var x = parseFloat(array[select][1]);
-		 var wegot = x;
+		 return  x;
 	 };
 	  // motor time 
 	 if ( select == 12 ) {
 		 var x = array[select][1];
-		 var wegot = x;
+		 return  x;
 	 };
-	 return wegot;
+	 // return acceleration
+	 if ( select == 13 ) {  
+		 var x = array[select][1];
+		 var y = array[select+1][1];
+		 var z = array[select+2][1]; 
+	     return parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2); 
+    // parseFloat(Math.round(Math.sqrt(x*x+y*y+z*z) * 100) / 100).toFixed(2);
+	 };
+	 return null;
    };
 
 
@@ -287,9 +306,9 @@
  	  ],
  	  'menus': {
         'flipDirection': ['left', 'right', 'forward', 'backward'],
-        'direction'    : ['up', 'down', 'forward', 'backward', 'left', 'right'],
+        'direction'    : ['up', 'down', 'forward', 'back', 'left', 'right'],
         'rotation'     : ['cw', 'ccw'],
-        'readcommand'  : ['speed?','battery?','time?','height?','temp?','attitude?','baro?','acceleration?','tof?']
+        'readcommand'  : ['speed?','battery?','time?','height?','temp?','attitude?','baro?','acceleration?','tof?', 'pitch?', 'roll?', 'yaw?']
     },
     url: 'https://github.com/f41ardu/TelloforScratch',
     displayName: 'Tello SDK 1.3.0.0'

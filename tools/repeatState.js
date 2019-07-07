@@ -25,10 +25,12 @@ server.on("error", function (err) {
 server.on("message", function (msg, rinfo) {
 	  console.log("server got: " + msg + " from " +
 		      rinfo.address + ":" + rinfo.port);
-	        var message = new Buffer( 'pitch:'+getRandomInt(-180, 180)+';roll:'+getRandomInt(-180, 180)+';yaw:'+getRandomInt(-180, 180)+';vgx:'+getRandomInt(20, 150)+';vgy:'+getRandomInt(20, 150)+';vgz:'+getRandomInt(20, 150)+';templ:'+getRandomInt(50, 100)+';temph:'+getRandomInt(50,100)+';tof:145;h:'+getRandomInt(20, 3000)+';bat:'+getRandomInt(10, 100)+';baro:1.06;time:'+getRandomInt(-500,-400)+';agx:727.00;agy:434.00;agz:447.00;' );
-		client.send(message, 0, message.length, 8890, '127.0.0.1', function(err, bytes) {
-		if (err) throw err;
-		console.log('UDP message ' + message +' sent to ' + '127.0.0.1' +':'+ '8890');
+	        // var message = new Buffer( 'pitch:'+getRandomInt(-180, 180)+';roll:'+getRandomInt(-180, 180)+';yaw:'+getRandomInt(-180, 180)+';vgx:'+getRandomInt(20, 150)+';vgy:'+getRandomInt(20, 150)+';vgz:'+getRandomInt(20, 150)+';templ:'+getRandomInt(50, 100)+';temph:'+getRandomInt(50,100)+';tof:145;h:'+getRandomInt(20, 3000)+';bat:'+getRandomInt(10, 100)+';baro:1.06;time:'+getRandomInt(-500,-400)+';agx:727.00;agy:434.00;agz:447.00;' );
+		    var message = new Buffer ('pitch:'+getRandomInt(-180, 180)+';roll:-15;yaw:-50;vgx:0;vgy:0;vgz:0;templ:93;temph:96;tof:10;h:0;bat:92;baro:421.51;time:0;agx:'+getRandomInt(-180, 180)+';agy:66.00;agz:-673.00;');
+
+			client.send(message, 0, message.length, 8890, '127.0.0.1', function(err, bytes) {
+			if (err) throw err;
+			console.log('UDP message ' + message +' sent to ' + '127.0.0.1' +':'+ '8890');
 		});
 		
 });
