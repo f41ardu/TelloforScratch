@@ -166,6 +166,28 @@
 		});
    };
    
+     // Send set fly direction and distance to fly
+   ext.go = function (x,y,z,speed) {
+   
+   var message = new Buffer('go' + ' ' + x + ' ' + y + ' ' + z + ' ' + speed);
+
+	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
+		//if (err) throw err;
+		//client.close();
+		});
+   };
+   
+       // Send set fly direction and distance to fly
+   ext.curve = function (x1,y1,z1,x1,y2,z2,speed) {
+   
+   var message = new Buffer('curve' + ' ' + x1 + ' ' + y1 + ' ' + z1 + ' ' + x2 + ' ' + y2 + ' ' + z2 + ' ' + speed);
+
+	client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
+		//if (err) throw err;
+		//client.close();
+		});
+   };
+   
    // Send rotation direction and rotation angle
    ext.rotation = function (direction, angle) {
    
@@ -228,7 +250,7 @@
 		 return x;  
 	 };
 	 // return yaw
-	 if ( select == 3 ) {  
+	 if ( select == 2 ) {  
 		 var x = array[select][1];
 	     return x;  
 	 };
@@ -299,11 +321,13 @@
 		[' ', 'take off', 'takeoff'],
 		[' ', 'land', 'land'],
 		[' ', 'emergency', 'emergency'],
-		[' ', 'fly %m.direction with distance %n', 'flydir', 'up', '20'],
-		[' ', 'rotate %m.rotation with angle %n', 'rotation', 'cw', '90'],
+		[' ', 'fly %m.direction with distance %n cm', 'flydir', 'up', '20'],
+		[' ', 'rotate %m.rotation with angle %n (°)', 'rotation', 'cw', '90'],
 		[' ', 'flip direction %m.flipDirection', 'setflipDirection', 'forward'],
-		[' ', 'set speed %n', 'setspeed', 80]	
- 	  ],
+		[' ', 'set speed %n', 'setspeed', 80],
+		[" ", "fly to x %n cm y %n cm z %n cm with speed %n cm/s", "go", 50, 50, 0, 50],
+		[" ", "fly a curve via x1 %n cm y1 %n cm z1 %n cm to x2 %n cm y2 %n cm z2 %n cm speed %n cm/s", "curve", 20, 20, 0, 60, 40, 0, 60]
+		],
  	  'menus': {
         'flipDirection': ['left', 'right', 'forward', 'backward'],
         'direction'    : ['up', 'down', 'forward', 'back', 'left', 'right'],
