@@ -1,5 +1,5 @@
 # TelloforScratch
-TelloforScratch
+TelloforScratch Release v1.1.2
 
 
 # Sources: 
