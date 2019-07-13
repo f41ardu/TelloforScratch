@@ -38,7 +38,7 @@
    var dgram = require('dgram');
    // client connector (send commands) 
    var client = dgram.createSocket('udp4');
-   // server connector (receive Telle response) 
+   // server connector (receive Tello response) 
    var server1 = dgram.createSocket('udp4');
    
    
@@ -46,6 +46,7 @@
    var myStatus = 1; // initially set status to yellow
    var connected = false; // initially set connected to false
    var getData = ' '; // initial set blank 
+   var getStatus = ' '; // initial set blank
    // simple dictionary 
    var dict = {
 	'pitch?' : 0, 
@@ -60,6 +61,8 @@
 	'time?' : 12, // Motors on time
 	'acceleration?' : 13, // 14, 15 vector length
    }; 
+   
+   
    
    // Scratch UDP Listener (experimental) 
    ext.cnct = function() {	
@@ -80,6 +83,13 @@
 	    // listen on all IP adresses
 		server1.bind(listenerPort,listenerHOST);
 		connected = true; 	
+		
+		client.bind(PORT);
+		
+		client.on('message', function (msg, remote) {
+	       getStatus = ' '+msg+' ';  
+		});
+		
 	} else {
 		alert ("Scratch already listening on udp ports"); 
 	}
@@ -91,6 +101,7 @@
 
    ext._shutdown = function() {
 	   server1.close();
+	   client.close(); 
    };
 
    // Status reporting code
@@ -216,7 +227,6 @@
      
      var message = new Buffer(val); 		
 	 var test = getData.trim();
-	 // interpreter for data will be implemented later
      if ( test != '' ) {
         treturn = test; 
 		} else {
@@ -225,7 +235,20 @@
 	 	 
      return treturn;
    };
-   
+
+ // read Data and return as string (used for test)
+   ext.getStatus = function () {
+     		
+	 var test = getStatus.trim();
+     if ( test != '' ) {
+        treturn = test; 
+		} else {
+			treturn = 'empty';
+		}; 
+	 	 
+     return treturn;
+   };
+     
    // read Data improved for all Tello return codes, flight and state commands
    ext.readValues = function (val) {
      
@@ -318,6 +341,7 @@
 		[' ', 'Send command', 'sendcommand'],
 		['r', 'Read %m.readcommand', 'readData', 'speed?'],
 		['r', 'Values %m.readcommand', 'readValues', 'speed?'],
+		['r', 'Status', 'getStatus'],
 		[' ', 'take off', 'takeoff'],
 		[' ', 'land', 'land'],
 		[' ', 'emergency', 'emergency'],
