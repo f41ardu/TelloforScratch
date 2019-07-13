@@ -1,3 +1,15 @@
+What's New in Version 1.1.2
+
+* All state information are available now 
+* Tello.js show status information (OK, Error, etc...)  
+* Add second udp receiver on port 8889 
+* emergency is still not implemented yet 
+
+Bug fixes 
+-  
+Know issues
+- 
+
 What's New in Version 1.1.1 
 
 * All state information are available now 
