@@ -1,6 +1,8 @@
 # TelloforScratch
 TelloforScratch Release v1.1.2
 
+# Obsolete, Scratch 2 require Adobe Flash which is no longer available. 
+
 
 # Sources: 
 
